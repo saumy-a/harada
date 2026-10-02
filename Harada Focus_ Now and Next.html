@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harada Focus: Now and Next</title>
+<style>
+:root{--bg:#f7f5f0;--card:#fff;--ink:#1d1d1b;--mut:#5b5b55;--line:#d6d0c2;--acc:#1f4e5f;--accfg:#fff;--hot:#a73c0b;--amb:#f6e1ac;--ok:#2e6b3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a1d;--card:#1d262a;--ink:#eceae4;--mut:#aeb3b0;--line:#34414a;--acc:#6fb3c9;--accfg:#10181b;--hot:#ff9a66;--amb:#4a3d17;--ok:#7fcf8e}}
+:root[data-theme="dark"]{--bg:#141a1d;--card:#1d262a;--ink:#eceae4;--mut:#aeb3b0;--line:#34414a;--acc:#6fb3c9;--accfg:#10181b;--hot:#ff9a66;--amb:#4a3d17;--ok:#7fcf8e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+.w{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:28px;margin:0}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:26px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.date{color:var(--mut);font-size:14px;margin-top:2px}
+button.t{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:13px;min-height:44px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px}
+.chip b{color:var(--acc)}
+.hero{background:var(--acc);color:var(--accfg);border-radius:14px;padding:18px;margin-top:18px}
+.hero small{opacity:.85;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.hero .tx{font-size:21px;font-weight:600;margin:6px 0 4px}
+.hero .mt{font-size:14px;opacity:.9}
+.hero label{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:15px;min-height:44px;cursor:pointer}
+.row{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;min-height:44px}
+.row input{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--acc)}
+.row label{flex:1;cursor:pointer}
+.row .m{display:block;font-size:13px;color:var(--mut)}
+.row .m.late{color:var(--hot);font-weight:600}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:6px;padding:0 6px;margin-right:6px;color:var(--mut)}
+.gpa{background:var(--amb)}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;background:var(--ok);width:0}
+details{margin-top:14px}
+summary{cursor:pointer;font-size:14px;color:var(--mut);min-height:44px;display:flex;align-items:center}
+.note{font-size:13px;color:var(--mut);margin-top:22px}
+</style>
+</head>
+<body>
+<div class="w">
+<div class="top">
+<div><h1>Now and Next</h1><div class="date" id="date"></div></div>
+<button class="t" id="theme" type="button">Dark / light</button>
+</div>
+<div class="chips" id="chips"></div>
+
+<div class="hero" id="hero"></div>
+
+<h2>Next up</h2>
+<div id="next"></div>
+
+<h2>Today's habits</h2>
+<div class="bar"><i id="hb"></i></div>
+<div id="habits"></div>
+<div class="row gpa"><div><b>GPA focus:</b> 6.7 now. You need an average SGPA of 8.3+ in sems 5 to 8 to finish near 7.5. Study blocks and early assignments are your daily lever.</div></div>
+<div id="sun"></div>
+
+<details><summary id="lsum"></summary><div id="later"></div></details>
+<details><summary id="dsum"></summary><div id="done"></div></details>
+
+<p class="note">Due dates are planning targets I set from your grid (Dec 2027 applications). Edit them if your semester calendar differs. Ticks are saved in this browser only.</p>
+</div>
+<script>
+var T=[
+["t3","Print the grid and start the habit checklist","2026-10-05","Habits"],
+["t1","Look up sem 5 credits; mark the heaviest courses","2026-10-06","GPA"],
+["t2","Make a study timetable: a 2-hour block per course each week","2026-10-07","GPA"],
+["t4","Start MIT 18.06 (linear algebra) at a fixed daily time","2026-10-08","Math"],
+["t5","Start CS229 at a fixed daily time","2026-10-12","ML"],
+["t6","Email 3 professors about research, even a small project","2026-10-12","Research"],
+["t7","Shortlist research internships and labs for summer 2027","2026-11-15","Mentors"],
+["t8","Start exam prep 3 weeks before sem 5 exams (adjust date to yours)","2026-11-20","GPA"],
+["t9","Find a lab or remote mentor","2027-01-15","Research"],
+["t10","Finish CS229","2027-01-31","ML"],
+["t11","Apply to summer 2027 research internships","2027-01-31","Mentors"],
+["t12","Finish MIT 18.06","2027-02-28","Math"],
+["t13","Finish matrix and multivariable calculus","2027-03-31","Math"],
+["t14","Build the mini-GPT from scratch","2027-03-31","Engineering"],
+["t15","Start your first research project","2027-03-31","Research"],
+["t16","Pick your subfield","2027-03-31","ML"],
+["t17","Set up personal website and GitHub","2027-03-31","Writing"],
+["t18","Finish CS231n or CS224n","2027-04-30","ML"],
+["t19","Finish Stat 110 (probability and statistics)","2027-05-31","Math"],
+["t20","Start the SOP; list 15 programs and 25 advisors","2027-06-30","Applications"],
+["t21","Secure 3 recommenders","2027-08-31","Mentors"],
+["t22","Finish convex optimization (Boyd)","2027-08-31","Math"],
+["t23","Learn JAX basics","2027-08-31","Engineering"],
+["t24","Submit a workshop paper or arXiv preprint","2027-09-30","Research"],
+["t25","Take TOEFL/IELTS; check whether GRE is needed","2027-09-30","Applications"],
+["t26","Make one open-source contribution","2027-09-30","Engineering"],
+["t27","Finish information theory basics","2027-10-31","Math"],
+["t28","Finish 5+ SOP drafts; have PhD students review them","2027-11-15","Applications"],
+["t29","Submit PhD applications","2027-12-01","Applications"]
+];
+var H=[["h1","Sleep on schedule (7.5 h)"],["h2","Exercise or 10K steps"],["h3","5 math problems"],["h4","1 hour PyTorch coding"],["h5","Coursework block (90 min, phone away)"],["h6","ML or research block (90 min, phone away)"],["h7","Read a paper or notes (15 min)"]];
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+function $(i){return document.getElementById(i)}
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+var key=today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+var done=load("hf-done",[]);
+var hab=load("hf-habits",{d:key,done:[]}); if(hab.d!==key){hab={d:key,done:[]};save("hf-habits",hab)}
+function dt(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function dd(s){return Math.round((dt(s)-today)/864e5)}
+function when(n,s){if(n<0)return ["Overdue by "+(-n)+(n===-1?" day":" days"),1];if(n===0)return ["Due today",1];if(n===1)return ["Due tomorrow",0];if(n<=21)return ["Due in "+n+" days",0];var d=dt(s);return ["Due "+d.getDate()+" "+MON[d.getMonth()]+" "+d.getFullYear(),0]}
+function row(t,id){var w=when(dd(t[2]),t[2]);return '<div class="row"><input type="checkbox" id="'+id+t[0]+'" data-t="'+t[0]+'"'+(done.indexOf(t[0])>-1?" checked":"")+'><label for="'+id+t[0]+'"><span class="tag">'+t[3]+'</span>'+t[1]+'<span class="m'+(w[1]?" late":"")+'">'+w[0]+'</span></label></div>'}
+function phase(){var y=today;if(y<new Date(2027,0,1))return"Phase 1: stabilise grades, build the rhythm";if(y<new Date(2027,6,1))return"Phase 2: start research, finish foundations";if(y<new Date(2027,11,2))return"Phase 3: turn your work into an application";return"Applications submitted"}
+function render(){
+$("date").textContent=DAYS[today.getDay()]+", "+today.getDate()+" "+MON[today.getMonth()]+" "+today.getFullYear();
+var left=T.filter(function(t){return done.indexOf(t[0])<0}).sort(function(a,b){return a[2]<b[2]?-1:a[2]>b[2]?1:0});
+var dn=T.filter(function(t){return done.indexOf(t[0])>-1});
+var apps=dd("2027-12-01");
+$("chips").innerHTML='<span class="chip">'+phase()+'</span><span class="chip"><b>'+apps+'</b> days to applications (about 1 Dec 2027)</span><span class="chip"><b>'+dn.length+'</b> of '+T.length+' milestones done</span>';
+if(left.length){var f=left[0],w=when(dd(f[2]),f[2]);$("hero").innerHTML='<small>Do this now</small><div class="tx">'+f[1]+'</div><div class="mt">'+f[3]+' · '+w[0]+'</div><label><input type="checkbox" data-t="'+f[0]+'" style="width:22px;height:22px"> Mark as done</label>'}else{$("hero").innerHTML='<small>All milestones done</small><div class="tx">Submit and keep the daily habits going.</div>'}
+$("next").innerHTML=left.slice(1,5).map(function(t){return row(t,"n")}).join("")||'<div class="note">Nothing queued.</div>';
+$("habits").innerHTML=H.map(function(h){return '<div class="row"><input type="checkbox" id="'+h[0]+'" data-h="'+h[0]+'"'+(hab.done.indexOf(h[0])>-1?" checked":"")+'><label for="'+h[0]+'">'+h[1]+'</label></div>'}).join("");
+$("hb").style.width=Math.round(100*hab.done.length/H.length)+"%";
+$("sun").innerHTML=today.getDay()===0?'<div class="row"><div><b>Sunday review (30 min):</b> review the week, plan the next, update your experiment and idea logs. Take your rest day.</div></div>':"";
+var rest=left.slice(5);
+$("lsum").textContent="Later ("+rest.length+")"; $("later").innerHTML=rest.map(function(t){return row(t,"l")}).join("");
+$("dsum").textContent="Completed ("+dn.length+")"; $("done").innerHTML=dn.map(function(t){return row(t,"d")}).join("");
+}
+document.addEventListener("change",function(e){var el=e.target,id=el.getAttribute("data-t"),h=el.getAttribute("data-h");
+if(id){var i=done.indexOf(id);if(el.checked&&i<0)done.push(id);if(!el.checked&&i>-1)done.splice(i,1);save("hf-done",done)}
+if(h){var j=hab.done.indexOf(h);if(el.checked&&j<0)hab.done.push(h);if(!el.checked&&j>-1)hab.done.splice(j,1);save("hf-habits",hab)}
+render()});
+$("theme").addEventListener("click",function(){var r=document.documentElement,d=r.getAttribute("data-theme");var dark=d?d==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;r.setAttribute("data-theme",dark?"light":"dark")});
+render();
+</script>
+</body>
+</html>
